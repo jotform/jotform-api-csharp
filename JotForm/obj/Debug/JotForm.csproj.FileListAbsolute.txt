@@ -1,0 +1,7 @@
+C:\Users\musdi_000\documents\visual studio 2012\Projects\JotForm\JotForm\obj\Debug\JotForm.csprojResolveAssemblyReference.cache
+C:\Users\musdi_000\documents\visual studio 2012\Projects\JotForm\JotForm\bin\Debug\JotForm.dll
+C:\Users\musdi_000\documents\visual studio 2012\Projects\JotForm\JotForm\bin\Debug\JotForm.pdb
+C:\Users\musdi_000\documents\visual studio 2012\Projects\JotForm\JotForm\bin\Debug\Newtonsoft.Json.dll
+C:\Users\musdi_000\documents\visual studio 2012\Projects\JotForm\JotForm\bin\Debug\Newtonsoft.Json.xml
+C:\Users\musdi_000\documents\visual studio 2012\Projects\JotForm\JotForm\obj\Debug\JotForm.dll
+C:\Users\musdi_000\documents\visual studio 2012\Projects\JotForm\JotForm\obj\Debug\JotForm.pdb
