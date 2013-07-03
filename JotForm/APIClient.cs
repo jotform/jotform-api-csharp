@@ -168,10 +168,27 @@ namespace JotForm
             return executeGetRequest("/form/" + formID.ToString() + "/submissions");
         }
         
-        public JObject createFormSubmissions(long formID, string qid, string submission)
+        public JObject createFormSubmissions(long formID, Dictionary<string, string> submission)
         {
             var data = new NameValueCollection();
-            data.Add(qid, submission);
+
+            var keys = submission.Keys;
+
+            foreach (var key in keys)
+            {
+                if (key.Contains("first")) 
+                {
+                    data.Add("submission[" + key.Substring(0, key.IndexOf("_")) + "][first]", submission[key]);
+                }
+                else if (key.Contains("last"))
+                {
+                    data.Add("submission[" + key.Substring(0, key.IndexOf("_")) + "][last]", submission[key]);
+                }
+                else
+                {
+                    data.Add("submission[" + key + "]", submission[key]);
+                }
+            }
 
             return executePostRequest("/form/" + formID.ToString() + "/submissions", data);
         }
