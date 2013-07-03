@@ -14,7 +14,6 @@ namespace JotForm
     public class APIClient
     {
         private string apiKey;
-        private string username;
         private bool debugMode;
 
         private string baseURL = "http://api.jotform.com/";
@@ -28,9 +27,7 @@ namespace JotForm
         }
 
         public JObject executeHttpRequest(string path, NameValueCollection parameters, string method)
-        {
-            //WebRequest req = WebRequest.Create("http://requestb.in/oanh1hoa");
-
+        {            
             if (method == "GET" && parameters != null)
             {
                 path = path + "?" + ToQueryString(parameters);
