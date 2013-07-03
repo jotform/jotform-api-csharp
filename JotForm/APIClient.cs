@@ -212,6 +212,11 @@ namespace JotForm
         {
             return executeGetRequest("/form/" + formID + "/properties");
         }
+
+        public JObject getFormProperty(string formID, string propertyKey)
+        {
+            return executeGetRequest("/form/" + formID + "/properties/" + propertyKey);
+        }
     }
 
     public class JotformException : System.Exception
