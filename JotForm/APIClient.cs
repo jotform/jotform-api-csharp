@@ -173,15 +173,43 @@ namespace JotForm
 
             foreach (var key in keys)
             {
-                if (key.Contains("first")) 
-                {
+                if (key.Contains("first")) {
                     data.Add("submission[" + key.Substring(0, key.IndexOf("_")) + "][first]", submission[key]);
-                }
-                else if (key.Contains("last"))
-                {
+                } else if (key.Contains("last")) {
                     data.Add("submission[" + key.Substring(0, key.IndexOf("_")) + "][last]", submission[key]);
-                }
-                else
+                } else if(key.Contains("month")) {
+                    data.Add("submission[" + key.Substring(0, key.IndexOf("_")) + "][month]", submission[key]);
+                } else if(key.Contains("day")) {
+                    data.Add("submission[" + key.Substring(0, key.IndexOf("_")) + "][day]", submission[key]);
+                } else if(key.Contains("year")) {
+                    data.Add("submission[" + key.Substring(0, key.IndexOf("_")) + "][year]", submission[key]);
+                } else if(key.Contains("hour")) {
+                    data.Add("submission[" + key.Substring(0, key.IndexOf("_")) + "][hour]", submission[key]);
+                } else if(key.Contains("min")) {
+                    data.Add("submission[" + key.Substring(0, key.IndexOf("_")) + "][min]", submission[key]);
+                } else if(key.Contains("ampm")) {
+                    data.Add("submission[" + key.Substring(0, key.IndexOf("_")) + "][ampm]", submission[key]);
+                } else if(key.Contains("addr_line1")) {
+                    data.Add("submission[" + key.Substring(0, key.IndexOf("_")) + "][addr_line1]", submission[key]);
+                } else if(key.Contains("addr_line2")) {
+                    data.Add("submission[" + key.Substring(0, key.IndexOf("_")) + "][addr_line2]", submission[key]);
+                } else if(key.Contains("city")) {
+                    data.Add("submission[" + key.Substring(0, key.IndexOf("_")) + "][city]", submission[key]);
+                } else if(key.Contains("state")) {
+                    data.Add("submission[" + key.Substring(0, key.IndexOf("_")) + "][state]", submission[key]);
+                } else if(key.Contains("postal")) {
+                    data.Add("submission[" + key.Substring(0, key.IndexOf("_")) + "][postal]", submission[key]);
+                } else if(key.Contains("country")) {
+                    data.Add("submission[" + key.Substring(0, key.IndexOf("_")) + "][country]", submission[key]);
+                } else if(key.Contains("area")) {
+                    data.Add("submission[" + key.Substring(0, key.IndexOf("_")) + "][area]", submission[key]);
+                } else if(key.Contains("phone")) {
+                    data.Add("submission[" + key.Substring(0, key.IndexOf("_")) + "][phone]", submission[key]);
+                } else if(key.Contains("hourSelect")) {
+                    data.Add("submission[" + key.Substring(0, key.IndexOf("_")) + "][hourSelect]", submission[key]);
+                } else if(key.Contains("minuteSelect")) {
+                    data.Add("submission[" + key.Substring(0, key.IndexOf("_")) + "][minuteSelect]", submission[key]);
+                } else
                 {
                     data.Add("submission[" + key + "]", submission[key]);
                 }
