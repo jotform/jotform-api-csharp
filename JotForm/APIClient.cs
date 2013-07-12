@@ -27,7 +27,7 @@ namespace JotForm
         }
 
         public JObject executeHttpRequest(string path, NameValueCollection parameters, string method)
-        {            
+        {
             if (method == "GET" && parameters != null)
             {
                 path = path + "?" + ToQueryString(parameters);
@@ -99,7 +99,12 @@ namespace JotForm
         {
             return executeHttpRequest(path, parameters, "POST");
         }
-        
+
+        public JObject executeDeleteRequest(string path, NameValueCollection parameters = null)
+        {
+            return executeHttpRequest(path, parameters, "DELETE");
+        }
+
         public JObject getUser()
         {
             return executeGetRequest("/user");
@@ -223,6 +228,11 @@ namespace JotForm
         public JObject getFormProperty(string formID, string propertyKey)
         {
             return executeGetRequest("/form/" + formID + "/properties/" + propertyKey);
+        }
+
+        public JObject deleteSubmission(long sid)
+        {
+            return executeDeleteRequest("/submission/" + sid);
         }
     }
 
