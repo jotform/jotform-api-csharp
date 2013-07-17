@@ -234,6 +234,24 @@ namespace JotForm
         {
             return executeDeleteRequest("/submission/" + sid);
         }
+
+        public JObject editSubmission(long sid, Dictionary<string, string> submission)
+        {
+            var data = new NameValueCollection();
+
+            var keys = submission.Keys;
+
+            foreach (var key in keys)
+            {
+                if (key.Contains("_")) {
+                    data.Add("submission[" + key.Substring(0, key.IndexOf("_")) + "][" + key.Substring(key.IndexOf("_") + 1) + "]", submission[key]);
+                } else {
+                    data.Add("submission[" + key + "]", submission[key]);
+                }
+            }
+
+            return executePostRequest("/submission/" + sid, data);
+        }
     }
 
     public class JotformException : System.Exception
