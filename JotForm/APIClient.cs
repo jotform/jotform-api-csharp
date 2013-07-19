@@ -215,24 +215,24 @@ namespace JotForm
             return executeGetRequest("/report/" + reportID.ToString());
         }
 
-        public JObject getFolder(string folderID)
+        public JObject getFolder(long folderID.ToString())
         {
             return executeGetRequest("/folder/" + folderID);
         }
 
-        public JObject getFormProperties(string formID)
+        public JObject getFormProperties(long formID)
         {
-            return executeGetRequest("/form/" + formID + "/properties");
+            return executeGetRequest("/form/" + formID.ToString() + "/properties");
         }
 
-        public JObject getFormProperty(string formID, string propertyKey)
+        public JObject getFormProperty(long formID, string propertyKey)
         {
-            return executeGetRequest("/form/" + formID + "/properties/" + propertyKey);
+            return executeGetRequest("/form/" + formID.ToString() + "/properties/" + propertyKey);
         }
 
         public JObject deleteSubmission(long sid)
         {
-            return executeDeleteRequest("/submission/" + sid);
+            return executeDeleteRequest("/submission/" + sid.ToString());
         }
 
         public JObject editSubmission(long sid, Dictionary<string, string> submission)
@@ -251,6 +251,16 @@ namespace JotForm
             }
 
             return executePostRequest("/submission/" + sid, data);
+        }
+
+        public JObject cloneForm(long formID)
+        {
+            return executePostRequest("/form/" + formID.ToString() + "/clone");
+        }
+
+        public JObject deleteFormQuestion(long formID, long qid)
+        {
+            return executeDeleteRequest("/form/" + formID.ToString() + "/question/" + qid.ToString());
         }
     }
 
