@@ -41,7 +41,7 @@ namespace JotForm
             req.Headers = headers;
             
 
-            if (method == "POST")
+            if (method == "POST" && parameters != null)
             {
                 var data = Encoding.UTF8.GetBytes(ToQueryString(parameters));
                 
