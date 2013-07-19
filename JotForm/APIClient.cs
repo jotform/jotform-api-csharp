@@ -215,9 +215,9 @@ namespace JotForm
             return executeGetRequest("/report/" + reportID.ToString());
         }
 
-        public JObject getFolder(long folderID.ToString())
+        public JObject getFolder(long folderID)
         {
-            return executeGetRequest("/folder/" + folderID);
+            return executeGetRequest("/folder/" + folderID.ToString());
         }
 
         public JObject getFormProperties(long formID)
