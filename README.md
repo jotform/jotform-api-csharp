@@ -32,11 +32,11 @@ using Newtonsoft.Json.Linq;
 
 namespace JotFormTest
 {
-    class Program
+    class PrintFormList
     {
         static void Main(string[] args)
         {
-            var client = new JotForm.APIClient("YOUR API CODE");
+            var client = new JotForm.APIClient("YOUR API KEY");
 
             var forms = client.getForms()["content"];
 
@@ -53,8 +53,7 @@ namespace JotFormTest
     }
 }
 
-   
-Get latest submissions of the user
+Get submissions of the latest form
 
 using System;
 using System.Collections.Generic;
@@ -66,36 +65,119 @@ using Newtonsoft.Json.Linq;
 
 namespace JotFormTest
 {
-    class Program
+    class PrintFormSubmissions
     {
         static void Main(string[] args)
         {
-            var client = new JotForm.APIClient("YOUR API CODE");
+            var client = new JotForm.APIClient("YOUR API KEY");
 
-            var allsubmissions = client.getSubmissions()["content"];
+            var forms = client.getForms(0, 1, null, "")["content"];
 
-            var createdat = (from submission in allsubmissions
-                            select submission.Value<string>("created_at")).ToArray();
+            var latestForm = forms[0];
 
-            for (int i = 0; i < createdat.Length; i++)
-            {
-                Console.Out.WriteLine(createdat[i]);
+            var submissions = client.getFormSubmissons(Convert.ToInt64(latestForm["id"]));
 
-                var answer = from sub in allsubmissions
-                             from ans in sub["answers"]
-                             where sub.Value<string>("created_at") == createdat[i]
-                             select ans;
+            Console.Out.WriteLine(submissions);
 
-                foreach (var item in answer)
-                {
-                    Console.Out.WriteLine(item);
-                }
-            }
-            
             Console.ReadLine();
         }
     }
 }
+
+Get latest 100 submissions ordered by creation date
+
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using JotForm;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
+
+namespace JotFormTest
+{
+    class PrintLastSubmissions
+    {
+        static void Main(string[] args)
+        {
+            var client = new JotForm.APIClient("YOUR API KEY");
+
+            var submissions = client.getSubmissions(0, 100, null, "created_at");
+
+            Console.Out.WriteLine(submissions);
+
+            Console.ReadLine();
+        }
+    }
+}
+
+Submission and form filter examples
+
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using JotForm;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
+
+namespace JotFormTest
+{
+    class Filters
+    {
+        static void Main(string[] args)
+        {
+            var client = new JotForm.APIClient("YOUR API KEY");
+
+            Dictionary<String, String> submissionFilter = new Dictionary<string, string>();
+            submissionFilter.Add("id:gt", "FORM ID");
+            submissionFilter.Add("created_at:gt", "DATE");
+
+            var submissions = client.getSubmissions(0, 0, submissionFilter, "");
+            Console.Out.WriteLine(submissions);
+
+            Dictionary<String, String> formFilter = new Dictionary<string, string>();
+            formFilter.Add("id:gt", "FORM ID");
+
+            var forms = client.getForms(0, 0, formFilter, "");
+            Console.Out.WriteLine(forms);
+
+            Console.ReadLine();
+        }
+    }
+}
+
+Delete last 50 submissions
+
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using JotForm;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
+
+namespace JotFormTest
+{
+    class DeleteSubmissions
+    {
+        static void Main(string[] args)
+        {
+            var client = new JotForm.APIClient("YOUR API KEY");
+
+            var submissions = client.getSubmissions(0, 50, null, "")["content"];
+
+            foreach (var submission in submissions)
+            {
+                var result = client.deleteSubmission(Convert.ToInt64(submission["id"]));
+                Console.Out.WriteLine(result);
+            }
+
+            Console.ReadLine();
+        }
+    }
+}
+
 
 First the APIClient class is included from the jotform-api-csharp/APIClient.cs file. This class provides access to JotForm's API. You have to create an API client instance with your API key. 
 In any case of exception (wrong authentication etc.), you can catch it or let it fail with fatal error.
