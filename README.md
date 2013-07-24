@@ -1,7 +1,6 @@
 jotform-api-csharp
 ==================
-
-JotForm API - C# Client
+[JotForm API](http://api.jotform.com/docs/) - C# Client
 
 ### Installation
 
@@ -97,6 +96,9 @@ namespace JotFormTest
         }
     }
 }
+
+First the APIClient class is included from the jotform-api-csharp/APIClient.cs file. This class provides access to JotForm's API. You have to create an API client instance with your API key. 
+In any case of exception (wrong authentication etc.), you can catch it or let it fail with fatal error.
 
 
     
