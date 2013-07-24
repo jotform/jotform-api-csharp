@@ -171,7 +171,7 @@ namespace JotForm
         {
             NameValueCollection parameters = CreateConditions(offset, limit, filter, orderBy);
 
-            return executeGetRequest("/user/submissions");
+            return executeGetRequest("/user/submissions", parameters);
         }
 
         public JObject getSubusers()
@@ -218,7 +218,7 @@ namespace JotForm
         {
             NameValueCollection parameters = CreateConditions(offset, limit, filter, orderBy);
 
-            return executeGetRequest("/form/" + formID.ToString() + "/submissions");
+            return executeGetRequest("/form/" + formID.ToString() + "/submissions", parameters);
         }
         
         public JObject createFormSubmissions(long formID, Dictionary<string, string> submission)
