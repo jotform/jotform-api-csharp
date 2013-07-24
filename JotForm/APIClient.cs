@@ -90,6 +90,51 @@ namespace JotForm
             return string.Join("&", array);
         }
 
+        private NameValueCollection CreateConditions(int offset, int limit, Dictionary<String, String> filter, String orderBy) 
+        {
+            NameValueCollection parameters = new NameValueCollection();
+
+            if (offset != 0)
+            {
+                parameters.Add("offset", offset.ToString());
+            }
+
+            if (limit != 0)
+            {
+                parameters.Add("limit", limit.ToString());
+            }
+
+            if (filter != null)
+            {
+                String value = "{";
+                int count = 0;
+
+                foreach (KeyValuePair<String, String> pair in filter)
+                {
+                    value = value + "\"" + pair.Key + "\":\"" + pair.Value + "\"";
+
+                    count++;
+
+                    if (count < filter.Count) 
+                    {
+                        value = value + ",";
+                    }
+                }
+
+                value = value + "}";
+
+                parameters.Add("filter", value);
+            }
+
+            if (orderBy != "")
+            {
+                parameters.Add("order_by", orderBy);
+            }
+
+            return parameters;
+ 
+        }
+
         public JObject executeGetRequest(string path, NameValueCollection parameters=null)
         {
             return executeHttpRequest(path, parameters, "GET");
@@ -115,13 +160,17 @@ namespace JotForm
             return executeGetRequest("/user/usage");
         }
 
-        public JObject getForms()
+        public JObject getForms(int offset = 0, int limit = 0, Dictionary<String, String> filter = null, String orderBy = null)
         {
-            return executeGetRequest("/user/forms");
+            NameValueCollection parameters = CreateConditions(offset, limit, filter, orderBy);
+
+            return executeGetRequest("/user/forms", parameters);
         }
 
-        public JObject getSubmissions()
+        public JObject getSubmissions(int offset = 0, int limit = 0, Dictionary<String, String> filter = null, String orderBy = null)
         {
+            NameValueCollection parameters = CreateConditions(offset, limit, filter, orderBy);
+
             return executeGetRequest("/user/submissions");
         }
 
@@ -165,8 +214,10 @@ namespace JotForm
             return executeGetRequest("/form/" + formID.ToString() + "/question/" + qid.ToString());
         }
 
-        public JObject getFormSubmissons(long formID)
+        public JObject getFormSubmissons(long formID, int offset = 0, int limit = 0, Dictionary<String, String> filter = null, String orderBy = null)
         {
+            NameValueCollection parameters = CreateConditions(offset, limit, filter, orderBy);
+
             return executeGetRequest("/form/" + formID.ToString() + "/submissions");
         }
         
