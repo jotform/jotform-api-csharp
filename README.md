@@ -22,6 +22,7 @@ JotForm API requires API key for all user related calls. You can create your API
 
 Print all forms of the user
 
+```csharp
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -52,9 +53,11 @@ namespace JotFormTest
         }
     }
 }
+``` 
 
 Get submissions of the latest form
 
+```csharp
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -83,9 +86,11 @@ namespace JotFormTest
         }
     }
 }
+```
 
 Get latest 100 submissions ordered by creation date
 
+```csharp
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -110,9 +115,11 @@ namespace JotFormTest
         }
     }
 }
+```
 
 Submission and form filter examples
 
+```csharp
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -146,9 +153,11 @@ namespace JotFormTest
         }
     }
 }
+```
 
 Delete last 50 submissions
 
+```csharp
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -177,9 +186,9 @@ namespace JotFormTest
         }
     }
 }
+```
 
-
-First the APIClient class is included from the jotform-api-csharp/APIClient.cs file. This class provides access to JotForm's API. You have to create an API client instance with your API key. 
+First the _APIClient_ class is included from the _jotform-api-csharp/APIClient.cs_ file. This class provides access to JotForm's API. You have to create an API client instance with your API key. 
 In any case of exception (wrong authentication etc.), you can catch it or let it fail with fatal error.
 
 
