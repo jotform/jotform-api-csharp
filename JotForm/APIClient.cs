@@ -150,16 +150,32 @@ namespace JotForm
             return executeHttpRequest(path, parameters, "DELETE");
         }
 
+        /// <summary>
+        /// Get user account details for a JotForm user
+        /// </summary>
+        /// <returns>User account type, avatar URL, name, email, website URL and account limits</returns>
         public JObject getUser()
         {
             return executeGetRequest("/user");
         }
 
+        /// <summary>
+        /// Get number of form submissions received this month
+        /// </summary>
+        /// <returns>Number of submissions, number of SSL form submissions, payment form submissions and upload space used by user</returns>
         public JObject getUsage()
         {
             return executeGetRequest("/user/usage");
         }
 
+        /// <summary>
+        /// Get a list of forms for this account
+        /// </summary>
+        /// <param name="offset">Start of each result set for form list (optional)</param>
+        /// <param name="limit">Number of results in each result set for form list (optional)</param>
+        /// <param name="filter">Filters the query results to fetch a specific form range (optional)</param>
+        /// <param name="orderBy">Order results by a form field name (optional)</param>
+        /// <returns>Basic details such as title of the form, when it was created, number of new and total submissions</returns>
         public JObject getForms(int offset = 0, int limit = 0, Dictionary<String, String> filter = null, String orderBy = null)
         {
             NameValueCollection parameters = CreateConditions(offset, limit, filter, orderBy);
@@ -167,6 +183,14 @@ namespace JotForm
             return executeGetRequest("/user/forms", parameters);
         }
 
+        /// <summary>
+        /// Get a list of submissions for this account
+        /// </summary>
+        /// <param name="offset">Start of each result set for form list. (optional)</param>
+        /// <param name="limit">Number of results in each result set for form list. (optional)</param>
+        /// <param name="filter">Filters the query results to fetch a specific form range.(optional)</param>
+        /// <param name="orderBy">Order results by a form field name. (optional)</param>
+        /// <returns>Basic details such as title of the form, when it was created, number of new and total submissions</returns>
         public JObject getSubmissions(int offset = 0, int limit = 0, Dictionary<String, String> filter = null, String orderBy = null)
         {
             NameValueCollection parameters = CreateConditions(offset, limit, filter, orderBy);
@@ -174,46 +198,91 @@ namespace JotForm
             return executeGetRequest("/user/submissions", parameters);
         }
 
+        /// <summary>
+        /// Get a list of sub users for this account
+        /// </summary>
+        /// <returns>List of forms and form folders with access privileges</returns>
         public JObject getSubusers()
         {
             return executeGetRequest("/user/subusers");
         }
 
+        /// <summary>
+        /// Get a list of form folders for this account
+        /// </summary>
+        /// <returns>List of forms and form folders with access privileges</returns>
         public JObject getFolders()
         {
             return executeGetRequest("/user/folders");
         }
 
+        /// <summary>
+        /// List of URLS for reports in this account
+        /// </summary>
+        /// <returns>Reports for all of the forms. ie. Excel, CSV, printable charts, embeddable HTML tables</returns>
         public JObject getReports()
         {
             return executeGetRequest("/user/reports");
         }
 
+        /// <summary>
+        /// Get user's settings for this account
+        /// </summary>
+        /// <returns>User's time zone and language</returns>
         public JObject getSettings()
         {
             return executeGetRequest("/user/settings");
         }
 
+        /// <summary>
+        /// Get user activity log
+        /// </summary>
+        /// <returns>Activity log about things like forms created/modified/deleted, account logins and other operations</returns>
         public JObject getHistory()
         {
             return executeGetRequest("/user/history");
         }
 
+        /// <summary>
+        /// Get basic information about a form
+        /// </summary>
+        /// <param name="formID">Form ID is the numbers you see on a form URL. You can get form IDs when you call /user/forms.</param>
+        /// <returns>Form ID, status, update and creation dates, submission count etc.</returns>
         public JObject getForm(long formID)
         {
             return executeGetRequest("/form/" + formID.ToString());
         }
 
+        /// <summary>
+        /// Get a list of all questions on a form
+        /// </summary>
+        /// <param name="formID">Form ID is the numbers you see on a form URL. You can get form IDs when you call /user/forms.</param>
+        /// <returns>Question properties of a form</returns>
         public JObject getFormQuestions(long formID)
         {
             return executeGetRequest("/form/" + formID.ToString() + "/questions");
         }
 
+        /// <summary>
+        /// Get details about a question
+        /// </summary>
+        /// <param name="formID">Form ID is the numbers you see on a form URL. You can get form IDs when you call /user/forms.</param>
+        /// <param name="qid">Identifier for each question on a form. You can get a list of question IDs from /form/{id}/questions.</param>
+        /// <returns>Question properties like required and validation</returns>
         public JObject getFormQuestion(long formID, long qid)
         {
             return executeGetRequest("/form/" + formID.ToString() + "/question/" + qid.ToString());
         }
 
+        /// <summary>
+        /// List of a form submissions
+        /// </summary>
+        /// <param name="formID">Form ID is the numbers you see on a form URL. You can get form IDs when you call /user/forms.</param>
+        /// <param name="offset">Start of each result set for form list. (optional)</param>
+        /// <param name="limit">Number of results in each result set for form list. (optional)</param>
+        /// <param name="filter">Filters the query results to fetch a specific form range.(optional)</param>
+        /// <param name="orderBy">Order results by a form field name. (optional)</param>
+        /// <returns>Submissions of a specific form</returns>
         public JObject getFormSubmissons(long formID, int offset = 0, int limit = 0, Dictionary<String, String> filter = null, String orderBy = null)
         {
             NameValueCollection parameters = CreateConditions(offset, limit, filter, orderBy);
@@ -221,6 +290,12 @@ namespace JotForm
             return executeGetRequest("/form/" + formID.ToString() + "/submissions", parameters);
         }
         
+        /// <summary>
+        /// Submit data to this form using the API
+        /// </summary>
+        /// <param name="formID">Form ID is the numbers you see on a form URL. You can get form IDs when you call /user/forms.</param>
+        /// <param name="submission">Submission data with question IDs</param>
+        /// <returns>Posted submission ID and URL</returns>
         public JObject createFormSubmissions(long formID, Dictionary<string, string> submission)
         {
             var data = new NameValueCollection();
@@ -239,16 +314,32 @@ namespace JotForm
             return executePostRequest("/form/" + formID.ToString() + "/submissions", data);
         }
         
+        /// <summary>
+        /// List of files uploaded on a form
+        /// </summary>
+        /// <param name="formID">Form ID is the numbers you see on a form URL. You can get form IDs when you call /user/forms.</param>
+        /// <returns>uploaded file information and URLs on a specific form</returns>
         public JObject getFormFiles(long formID)
         {
             return executeGetRequest("/form/" + formID.ToString() + "/files");
         }
 
+        /// <summary>
+        /// Get list of webhooks for a form
+        /// </summary>
+        /// <param name="formID">Form ID is the numbers you see on a form URL. You can get form IDs when you call /user/forms.</param>
+        /// <returns>List of webhooks for a specific form</returns>
         public JObject getFormWebhooks(long formID)
         {
             return executeGetRequest("/form/" + formID.ToString() + "/webhooks");
         }
 
+        /// <summary>
+        /// Add a new webhook
+        /// </summary>
+        /// <param name="formID">Form ID is the numbers you see on a form URL. You can get form IDs when you call /user/forms.</param>
+        /// <param name="webhookURL">Webhook URL is where form data will be posted when form is submitted.</param>
+        /// <returns>List of webhooks for a specific form</returns>
         public JObject createFormWebhook(long formID, string webhookURL)
         {
             var data = new NameValueCollection();
@@ -256,36 +347,73 @@ namespace JotForm
             return executePostRequest("/form/" + formID.ToString() + "/webhooks", data);
         }        
 
+        /// <summary>
+        /// Get submission data
+        /// </summary>
+        /// <param name="sid">You can get submission IDs when you call /form/{id}/submissions.</param>
+        /// <returns>Information and answers of a specific submission</returns>
         public JObject getSubmission(long sid)
         {
             return executeGetRequest("/submission/" + sid.ToString());
         }
 
+        /// <summary>
+        /// Get report details
+        /// </summary>
+        /// <param name="reportID">You can get a list of reports from /user/reports</param>
+        /// <returns>Properties of a speceific report like fields and status</returns>
         public JObject getReport(long reportID)
         {
             return executeGetRequest("/report/" + reportID.ToString());
         }
 
+        /// <summary>
+        /// Get folder details
+        /// </summary>
+        /// <param name="folderID">You can get folders IDs when you call /user/folders.</param>
+        /// <returns>List of forms in a folder, and other details about the form such as folder color.</returns>
         public JObject getFolder(long folderID)
         {
             return executeGetRequest("/folder/" + folderID.ToString());
         }
 
+        /// <summary>
+        /// Get a list of all properties on a form
+        /// </summary>
+        /// <param name="formID">Form ID is the numbers you see on a form URL. You can get form IDs when you call /user/forms.</param>
+        /// <returns>Form properties like width, expiration date, style etc.</returns>
         public JObject getFormProperties(long formID)
         {
             return executeGetRequest("/form/" + formID.ToString() + "/properties");
         }
 
+        /// <summary>
+        /// Get a specific property of the form
+        /// </summary>
+        /// <param name="formID">Form ID is the numbers you see on a form URL. You can get form IDs when you call /user/forms.</param>
+        /// <param name="propertyKey">Property key</param>
+        /// <returns>Given property key value.]</returns>
         public JObject getFormProperty(long formID, string propertyKey)
         {
             return executeGetRequest("/form/" + formID.ToString() + "/properties/" + propertyKey);
         }
 
+        /// <summary>
+        /// Delete a single submission
+        /// </summary>
+        /// <param name="sid">You can get submission IDs when you call /user/submissions.</param>
+        /// <returns>Status of request</returns>
         public JObject deleteSubmission(long sid)
         {
             return executeDeleteRequest("/submission/" + sid.ToString());
         }
 
+        /// <summary>
+        /// Edit a single submission
+        /// </summary>
+        /// <param name="sid">You can get submission IDs when you call /user/submissions.</param>
+        /// <param name="submission">New submission data with question IDs</param>
+        /// <returns>Status of request</returns>
         public JObject editSubmission(long sid, Dictionary<string, string> submission)
         {
             var data = new NameValueCollection();
@@ -304,11 +432,22 @@ namespace JotForm
             return executePostRequest("/submission/" + sid, data);
         }
 
+        /// <summary>
+        /// Clone a single form
+        /// </summary>
+        /// <param name="formID">Form ID is the numbers you see on a form URL. You can get form IDs when you call /user/forms.</param>
+        /// <returns>Status of request</returns>
         public JObject cloneForm(long formID)
         {
             return executePostRequest("/form/" + formID.ToString() + "/clone");
         }
 
+        /// <summary>
+        /// Delete a single form question
+        /// </summary>
+        /// <param name="formID">Form ID is the numbers you see on a form URL. You can get form IDs when you call /user/forms.</param>
+        /// <param name="qid">Identifier for each question on a form. You can get a list of question IDs from /form/{id}/questions.</param>
+        /// <returns></Status of request<returns>
         public JObject deleteFormQuestion(long formID, long qid)
         {
             return executeDeleteRequest("/form/" + formID.ToString() + "/question/" + qid.ToString());
