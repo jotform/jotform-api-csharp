@@ -150,6 +150,33 @@ namespace JotForm
             return executeHttpRequest(path, parameters, "DELETE");
         }
 
+        public JObject executePutRequest(string path, JObject parameters)
+        {
+            WebRequest req = WebRequest.Create(this.baseURL + path);
+            req.Method = "PUT";
+
+            WebHeaderCollection headers = new WebHeaderCollection();
+            headers.Add("apiKey:" + apiKey);
+            req.Headers = headers;
+            
+            var data = Encoding.UTF8.GetBytes(parameters.ToString());
+
+            req.ContentLength = data.Length;
+            req.ContentType = "application/x-www-form-urlencoded";
+
+            Stream dataStream = req.GetRequestStream();
+
+            dataStream.Write(data, 0, data.Length);
+            dataStream.Close();
+            
+            HttpWebResponse resp = (HttpWebResponse)req.GetResponse();
+
+            Stream answerStream = resp.GetResponseStream();
+            String answerString = new StreamReader(answerStream).ReadToEnd();
+
+            return JObject.Parse(answerString);
+        }
+
         /// <summary>
         /// Get user account details for a JotForm user
         /// </summary>
@@ -451,6 +478,129 @@ namespace JotForm
         public JObject deleteFormQuestion(long formID, long qid)
         {
             return executeDeleteRequest("/form/" + formID.ToString() + "/question/" + qid.ToString());
+        }
+
+        /// <summary>
+        /// Add new question to specified form.
+        /// </summary>
+        /// <param name="formID">Form ID is the numbers you see on a form URL. You can get form IDs when you call /user/forms.</param>
+        /// <param name="questionProperties">New question properties like type and text.</param>
+        /// <returns>Returns properties of new question.</returns>
+        public JObject createFormQuestion(long formID, Dictionary<string, string> question)
+        {
+            var data = new NameValueCollection();
+
+            var keys = question.Keys;
+
+            foreach (var key in keys)
+            {
+                data.Add("question[" + key + "]", question[key]);
+            }
+
+            return executePostRequest("/form/" + formID.ToString() + "/questions", data);
+        }
+        
+        /// <summary>
+        /// Add new question to specified form
+        /// </summary>
+        /// <param name="formID">Form ID is the numbers you see on a form URL. You can get form IDs when you call /user/forms.</param>
+        /// <param name="questions">New question properties like type and text.</param>
+        /// <returns>Returns properties of new question.</returns>
+        public JObject createFormQuestions(long formID, Dictionary<string, string> questions)
+        {
+            var data = new NameValueCollection();
+
+            var keys = questions.Keys;
+
+            foreach (var key in keys)
+            {
+                question.Add("question[" + key + "]", questionProperties[key]);
+            }
+
+            return executePostRequest("/form/" + formID.ToString() + "/questions", question);
+        }
+
+        /// <summary>
+        /// Add new questions to specified form
+        /// </summary>
+        /// <param name="formID">Form ID is the numbers you see on a form URL. You can get form IDs when you call /user/forms.</param>
+        /// <param name="questions">New question properties like type and text.</param>
+        /// <returns>Returns properties of new questions.</returns>
+        public JObject createFormQuestions(long formID, JObject questions)
+        {
+            return executePutRequest("/form/" + formID + "/questions", questions);
+        }
+
+        /// <summary>
+        /// Add or edit a single question properties
+        /// </summary>
+        /// <param name="formID">Form ID is the numbers you see on a form URL. You can get form IDs when you call /user/forms.</param>
+        /// <param name="qid">Identifier for each question on a form. You can get a list of question IDs from /form/{id}/questions.</param>
+        /// <param name="questionProperties">New question properties like text and order.</param>
+        /// <returns>Returns edited property and type of question.</returns>
+        public JObject editFormQuestion(long formID, long qid, Dictionary<string, string> questionProperties)
+        {
+            var question = new NameValueCollection();
+
+            var keys = questionProperties.Keys;
+
+            foreach (var key in keys)
+            {
+                question.Add("question[" + key + "]", questionProperties[key]);
+            }
+
+            return executePostRequest("/form/" + formID.ToString() + "/question/" + qid.ToString(), question);
+        }
+
+        /// <summary>
+        /// Add or edit properties of a specific form
+        /// </summary>
+        /// <param name="formID">Form ID is the numbers you see on a form URL. You can get form IDs when you call /user/forms.</param>
+        /// <param name="formProperties">New properties like label width.</param>
+        /// <returns>Returns edited properties.</returns>
+        public JObject setFormProperties(long formID, Dictionary<string, string> formProperties)
+        {
+            var properties = new NameValueCollection();
+
+            var keys = formProperties.Keys;
+
+            foreach (var key in keys)
+            {
+                properties.Add("properties[" + key + "]", formProperties[key]);
+            }
+
+            return executePostRequest("/form/" + formID + "/properties", properties);
+        }
+
+        /// <summary>
+        /// Add or edit properties of a specific form
+        /// </summary>
+        /// <param name="formID">Form ID is the numbers you see on a form URL. You can get form IDs when you call /user/forms.</param>
+        /// <param name="formProperties">New properties like label width.</param>
+        /// <returns>Returns edited properties.</returns>
+        public JObject setMultipleFormProperties(long formID, JObject formProperties)
+        {
+            return executePutRequest("/form/" + formID + "/properties", formProperties);
+        }
+
+        /// <summary>
+        /// Create a new form
+        /// </summary>
+        /// <param name="form">Questions, properties and emails of new form.</param>
+        /// <returns>Returns new form.</returns>
+        public JObject createForm(JObject form)
+        {
+            return executePutRequest("/user/forms", form);
+        }
+
+        /// <summary>
+        /// Delete a specific form
+        /// </summary>
+        /// <param name="formID">Form ID is the numbers you see on a form URL. You can get form IDs when you call /user/forms.</param>
+        /// <returns>Properties of deleted form.</returns>
+        public JObject deleteForm(long formID)
+        {
+            return executeDeleteRequest("/form/" + formID.ToString());
         }
     }
 
