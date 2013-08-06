@@ -150,7 +150,7 @@ namespace JotForm
             return executeHttpRequest(path, parameters, "DELETE");
         }
 
-        public JObject executePutRequest(string path, JObject parameters)
+        public JObject executePutRequest(string path, string parameters)
         {
             WebRequest req = WebRequest.Create(this.baseURL + path);
             req.Method = "PUT";
@@ -501,23 +501,14 @@ namespace JotForm
         }
         
         /// <summary>
-        /// Add new question to specified form
+        /// Add new questions to specified form
         /// </summary>
         /// <param name="formID">Form ID is the numbers you see on a form URL. You can get form IDs when you call /user/forms.</param>
         /// <param name="questions">New question properties like type and text.</param>
-        /// <returns>Returns properties of new question.</returns>
-        public JObject createFormQuestions(long formID, Dictionary<string, string> questions)
+        /// <returns>Returns properties of new questions.</returns>
+        public JObject createFormQuestions(long formID, string questions)
         {
-            var data = new NameValueCollection();
-
-            var keys = questions.Keys;
-
-            foreach (var key in keys)
-            {
-                data.Add("question[" + key + "]", questions[key]);
-            }
-
-            return executePostRequest("/form/" + formID.ToString() + "/questions", data);
+            return executePutRequest("/form/" + formID + "/questions", questions);
         }
 
         /// <summary>
@@ -567,7 +558,7 @@ namespace JotForm
         /// <param name="formID">Form ID is the numbers you see on a form URL. You can get form IDs when you call /user/forms.</param>
         /// <param name="formProperties">New properties like label width.</param>
         /// <returns>Returns edited properties.</returns>
-        public JObject setMultipleFormProperties(long formID, JObject formProperties)
+        public JObject setMultipleFormProperties(long formID, string formProperties)
         {
             return executePutRequest("/form/" + formID + "/properties", formProperties);
         }
@@ -577,7 +568,7 @@ namespace JotForm
         /// </summary>
         /// <param name="form">Questions, properties and emails of new form.</param>
         /// <returns>Returns new form.</returns>
-        public JObject createForm(JObject form)
+        public JObject createForm(string form)
         {
             return executePutRequest("/user/forms", form);
         }
