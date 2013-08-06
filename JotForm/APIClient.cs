@@ -501,26 +501,6 @@ namespace JotForm
         }
         
         /// <summary>
-        /// Add new question to specified form.
-        /// </summary>
-        /// <param name="formID">Form ID is the numbers you see on a form URL. You can get form IDs when you call /user/forms.</param>
-        /// <param name="questionProperties">New question properties like type and text.</param>
-        /// <returns>Returns properties of new question.</returns>
-        public JObject createFormQuestion(long formID, Dictionary<string, string> question)
-        {
-            var data = new NameValueCollection();
-
-            var keys = question.Keys;
-
-            foreach (var key in keys)
-            {
-                data.Add("question[" + key + "]", question[key]);
-            }
-
-            return executePostRequest("/form/" + formID.ToString() + "/questions", data);
-        }
-        
-        /// <summary>
         /// Add new question to specified form
         /// </summary>
         /// <param name="formID">Form ID is the numbers you see on a form URL. You can get form IDs when you call /user/forms.</param>
