@@ -135,6 +135,25 @@ namespace JotForm
  
         }
 
+        private NameValueCollection CreateHistoryQuery(string action, string date, string sortBy, string startDate, string endDate)
+        {
+            Dictionary<String, String> args = new Dictionary<string, string>();
+            args.Add("action", action);
+            args.Add("date", date);
+            args.Add("sortBy", sortBy);
+            args.Add("startDate", startDate);
+            args.Add("endDate", endDate);
+
+            NameValueCollection parameters = new NameValueCollection();
+
+            foreach (KeyValuePair<String, String> pair in args)
+            {
+                parameters.Add(pair.Key, pair.Value);
+            }
+
+            return parameters;
+        }
+
         public JObject executeGetRequest(string path, NameValueCollection parameters=null)
         {
             return executeHttpRequest(path, parameters, "GET");
@@ -264,10 +283,17 @@ namespace JotForm
         /// <summary>
         /// Get user activity log
         /// </summary>
+        /// <param name="action">Filter results by activity performed. Default is 'all'.</param>
+        /// <param name="date">Limit results by a date range. If you'd like to limit results by specific dates you can use startDate and endDate fields instead.</param>
+        /// <param name="sortBy">Lists results by ascending and descending order.</param>
+        /// <param name="starDate">Limit results to only after a specific date. Format: MM/DD/YYYY.</param>
+        /// <param name="endDate">Limit results to only before a specific date. Format: MM/DD/YYYY.</param>
         /// <returns>Activity log about things like forms created/modified/deleted, account logins and other operations</returns>
-        public JObject getHistory()
+        public JObject getHistory(string action = "", string date = "", string sortBy = "", string startDate = "", string endDate = "")
         {
-            return executeGetRequest("/user/history");
+            NameValueCollection parameters = CreateHistoryQuery(action, date, sortBy, startDate, endDate);
+
+            return executeGetRequest("/user/history", parameters);
         }
 
         /// <summary>
