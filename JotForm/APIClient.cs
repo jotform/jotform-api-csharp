@@ -26,7 +26,7 @@ namespace JotForm
             this.debugMode = debugMode;
         }
 
-        public JObject executeHttpRequest(string path, NameValueCollection parameters, string method)
+        private JObject executeHttpRequest(string path, NameValueCollection parameters, string method)
         {
             if (method == "GET" && parameters != null)
             {
@@ -78,6 +78,53 @@ namespace JotForm
             }
 
             return JObject.Parse(answerString);
+        }
+
+        private JObject executeHttpRequest(string path, string parameters)
+        {
+            WebRequest req = WebRequest.Create(this.baseURL + path);
+            req.Method = "PUT";
+
+            WebHeaderCollection headers = new WebHeaderCollection();
+            headers.Add("apiKey:" + apiKey);
+            req.Headers = headers;
+
+            var data = Encoding.UTF8.GetBytes(parameters.ToString());
+
+            req.ContentLength = data.Length;
+            req.ContentType = "application/x-www-form-urlencoded";
+
+            Stream dataStream = req.GetRequestStream();
+
+            dataStream.Write(data, 0, data.Length);
+            dataStream.Close();
+
+            HttpWebResponse resp = (HttpWebResponse)req.GetResponse();
+
+            Stream answerStream = resp.GetResponseStream();
+            String answerString = new StreamReader(answerStream).ReadToEnd();
+
+            return JObject.Parse(answerString); 
+        }
+
+        private JObject executeGetRequest(string path, NameValueCollection parameters = null)
+        {
+            return executeHttpRequest(path, parameters, "GET");
+        }
+
+        private JObject executePostRequest(string path, NameValueCollection parameters = null)
+        {
+            return executeHttpRequest(path, parameters, "POST");
+        }
+
+        private JObject executeDeleteRequest(string path, NameValueCollection parameters = null)
+        {
+            return executeHttpRequest(path, parameters, "DELETE");
+        }
+
+        private JObject executePutRequest(string path, string parameters = null)
+        {
+            return executeHttpRequest(path, parameters);
         }
 
         private string ToQueryString(NameValueCollection nvc)
@@ -152,48 +199,6 @@ namespace JotForm
             }
 
             return parameters;
-        }
-
-        public JObject executeGetRequest(string path, NameValueCollection parameters=null)
-        {
-            return executeHttpRequest(path, parameters, "GET");
-        }
-
-        public JObject executePostRequest(string path, NameValueCollection parameters=null)
-        {
-            return executeHttpRequest(path, parameters, "POST");
-        }
-
-        public JObject executeDeleteRequest(string path, NameValueCollection parameters = null)
-        {
-            return executeHttpRequest(path, parameters, "DELETE");
-        }
-
-        public JObject executePutRequest(string path, string parameters)
-        {
-            WebRequest req = WebRequest.Create(this.baseURL + path);
-            req.Method = "PUT";
-
-            WebHeaderCollection headers = new WebHeaderCollection();
-            headers.Add("apiKey:" + apiKey);
-            req.Headers = headers;
-            
-            var data = Encoding.UTF8.GetBytes(parameters.ToString());
-
-            req.ContentLength = data.Length;
-            req.ContentType = "application/x-www-form-urlencoded";
-
-            Stream dataStream = req.GetRequestStream();
-
-            dataStream.Write(data, 0, data.Length);
-            dataStream.Close();
-            
-            HttpWebResponse resp = (HttpWebResponse)req.GetResponse();
-
-            Stream answerStream = resp.GetResponseStream();
-            String answerString = new StreamReader(answerStream).ReadToEnd();
-
-            return JObject.Parse(answerString);
         }
 
         /// <summary>
