@@ -16,7 +16,7 @@ namespace JotForm
         private string apiKey;
         private bool debugMode;
 
-        private string baseURL = "http://api.jotform.com/";
+        private string baseURL = "https://api.jotform.com/";
         private string apiVersion = "v1";
 
         public APIClient(String apiKey, bool debugMode=false)
