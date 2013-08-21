@@ -599,7 +599,7 @@ namespace JotForm
         /// </summary>
         /// <param name="form">Questions, properties and emails of new form.</param>
         /// <returns>Returns new form.</returns>
-        public JObject createForm(string form)
+        public JObject createForms(string form)
         {
             return executePutRequest("/user/forms", form);
         }
