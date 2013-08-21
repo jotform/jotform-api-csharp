@@ -354,7 +354,7 @@ namespace JotForm
         /// <param name="formID">Form ID is the numbers you see on a form URL. You can get form IDs when you call /user/forms.</param>
         /// <param name="submission">Submission data with question IDs</param>
         /// <returns>Posted submission ID and URL</returns>
-        public JObject createFormSubmissions(long formID, Dictionary<string, string> submission)
+        public JObject createFormSubmission(long formID, Dictionary<string, string> submission)
         {
             var data = new NameValueCollection();
 
