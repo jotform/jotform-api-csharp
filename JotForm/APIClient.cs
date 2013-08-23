@@ -690,6 +690,23 @@ namespace JotForm
         {
             return executeDeleteRequest("/form/" + formID.ToString());
         }
+
+        /// <summary>
+        /// Register with username, password and email
+        /// </summary>
+        /// <param name="userDetails">Username, password and email to register a new user</param>
+        /// <returns>Returns new user's details</returns>
+        public JObject registerUser(Dictionary<string, string> userDetails)
+        {
+            NameValueCollection parameters = new NameValueCollection();
+
+            foreach (var item in userDetails)
+            {
+                parameters.Add(item.Key, item.Value);
+            }
+
+            return executePostRequest("/user/register", parameters);
+        }
     }
 
     public class JotformException : System.Exception
