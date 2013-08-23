@@ -284,6 +284,22 @@ namespace JotForm
         {
             return executeGetRequest("/user/settings");
         }
+        /// <summary>
+        /// Update user's settings
+        /// </summary>
+        /// <param name="settings">New user setting values with setting keys</param>
+        /// <returns>Changes on user settings</returns>
+        public JObject updateSettings(Dictionary<string, string> settings)
+        {
+            NameValueCollection parameters = new NameValueCollection();
+
+            foreach (var pair in settings)
+            {
+                parameters.Add(pair.Key, pair.Value);
+            }
+
+            return executePostRequest("/user/settings", parameters);
+        }
 
         /// <summary>
         /// Get user activity log
@@ -371,6 +387,17 @@ namespace JotForm
 
             return executePostRequest("/form/" + formID.ToString() + "/submissions", data);
         }
+
+        /// <summary>
+        /// Submit data to this form using the API
+        /// </summary>
+        /// <param name="formID">Form ID is the numbers you see on a form URL. You can get form IDs when you call /user/forms.</param>
+        /// <param name="submissions">Submission data with question IDs.</param>
+        /// <returns>Posted submission ID and URL.</returns>
+        public JObject createFormSubmissions(long formID, string submissions)
+        {
+            return executePutRequest("/form/" + formID.ToString() + "/submissions", submissions);
+        }
         
         /// <summary>
         /// List of files uploaded on a form
@@ -403,7 +430,18 @@ namespace JotForm
             var data = new NameValueCollection();
             data.Add("webhookURL", webhookURL);
             return executePostRequest("/form/" + formID.ToString() + "/webhooks", data);
-        }        
+        }
+
+        /// <summary>
+        /// Delete a specific webhook of a form
+        /// </summary>
+        /// <param name="formID">Form ID is the numbers you see on a form URL. You can get form IDs when you call /user/forms.</param>
+        /// <param name="webhookID">You can get webhook IDs when you call /form/{formID}/webhooks.</param>
+        /// <returns>Remaining webhook URLs of form.</returns>
+        public JObject deleteFormWebhook(long formID, long webhookID)
+        {
+            return executeDeleteRequest("/form/" + formID.ToString() + "/webhooks/" + webhookID.ToString());
+        }
 
         /// <summary>
         /// Get submission data
@@ -599,6 +637,45 @@ namespace JotForm
         /// </summary>
         /// <param name="form">Questions, properties and emails of new form.</param>
         /// <returns>Returns new form.</returns>
+        public JObject createForm(Dictionary<string, dynamic> form)
+        {
+            NameValueCollection parameters = new NameValueCollection();
+
+            foreach (var formPair in form)
+            {
+                if (formPair.Key.Equals("properties"))
+                {
+                    foreach (var propertyPair in formPair.Value)
+                    {
+                        parameters.Add(formPair.Key + "[" + propertyPair.Key + "]", propertyPair.Value);
+                    }
+                }
+                else
+                {
+                    Dictionary<string, string>[] formItem = formPair.Value;
+
+                    for (int i = 0; i < formItem.Length; i++)
+                    {
+                        Dictionary<string, string> item = formItem[i];
+
+                        foreach (var pair in item)
+                        {
+                            parameters.Add(formPair.Key + "[" + i.ToString() + "][" + pair.Key + "]", pair.Value);
+                        }
+
+                    }
+
+                }
+            }
+
+            return executePostRequest("/user/forms", parameters);
+        }
+
+        /// <summary>
+        /// Create new forms
+        /// </summary>
+        /// <param name="form">Questions, properties and emails of new forms.</param>
+        /// <returns>Returns new forms.</returns>
         public JObject createForms(string form)
         {
             return executePutRequest("/user/forms", form);
