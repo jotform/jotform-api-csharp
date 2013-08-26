@@ -707,6 +707,23 @@ namespace JotForm
 
             return executePostRequest("/user/register", parameters);
         }
+
+        /// <summary>
+        /// Login user with given credentials
+        /// </summary>
+        /// <param name="credentials">Username, password, application name and access type of user</param>
+        /// <returns>Returns logged in user's settings and app key</returns>
+        public JObject loginUser(Dictionary<string, string> credentials)
+        {
+            NameValueCollection parameters = new NameValueCollection();
+
+            foreach (var item in credentials)
+            {
+                parameters.Add(item.Key, item.Value);
+            }
+
+            return executePostRequest("/user/login", parameters);
+        }
     }
 
     public class JotformException : System.Exception
