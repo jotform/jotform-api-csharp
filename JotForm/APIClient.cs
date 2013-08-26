@@ -19,10 +19,15 @@ namespace JotForm
         private string baseURL = "https://api.jotform.com/";
         private string apiVersion = "v1";
 
+        public APIClient()
+        {
+            this.apiKey = null;
+            this.debugMode = false;
+        }
+
         public APIClient(String apiKey, bool debugMode=false)
         {
             this.apiKey = apiKey;
-
             this.debugMode = debugMode;
         }
 
