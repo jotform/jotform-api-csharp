@@ -1,4 +1,10 @@
-﻿using System;
+﻿// JotForm API - C# Client
+// copyright   2013 Interlogy, LLC.
+// link        http://www.jotform.com
+// version     1.0
+// package     JotFormAPI
+
+using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Linq;
