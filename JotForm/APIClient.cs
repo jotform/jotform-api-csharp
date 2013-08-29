@@ -20,7 +20,15 @@ namespace JotForm
     public class APIClient
     {
         private string apiKey;
-        private bool debugMode;
+        private bool _debugMode;
+
+        public bool debugMode
+        {
+            get
+            { return this._debugMode; }
+            set 
+            { this._debugMode = value; }
+        }
 
         private string baseURL = "https://api.jotform.com/";
         private string apiVersion = "v1";
@@ -28,13 +36,21 @@ namespace JotForm
         public APIClient()
         {
             this.apiKey = null;
-            this.debugMode = false;
+            this._debugMode = false;
         }
 
         public APIClient(String apiKey, bool debugMode=false)
         {
             this.apiKey = apiKey;
-            this.debugMode = debugMode;
+            this._debugMode = debugMode;
+        }
+
+        private void debug(String str) 
+        {
+            if (this._debugMode)
+            {
+                Console.Out.WriteLine(str);
+            }
         }
 
         private JObject executeHttpRequest(string path, NameValueCollection parameters, string method)
@@ -47,13 +63,18 @@ namespace JotForm
             WebRequest req = WebRequest.Create(this.baseURL + this.apiVersion + path);
             req.Method = method;
 
+            this.debug(this.baseURL + this.apiVersion + path);
+
             WebHeaderCollection headers = new WebHeaderCollection();
             headers.Add("apiKey:" + apiKey );
             req.Headers = headers;
-            
+
+
 
             if (method == "POST" && parameters != null)
             {
+                this.debug(parameters.ToString());
+
                 var data = Encoding.UTF8.GetBytes(ToQueryString(parameters));
                 
                 req.ContentLength = data.Length;
