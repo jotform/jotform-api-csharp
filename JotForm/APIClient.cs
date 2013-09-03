@@ -520,10 +520,20 @@ namespace JotForm
         /// </summary>
         /// <param name="formID">Form ID is the numbers you see on a form URL. You can get form IDs when you call /user/forms.</param>
         /// <param name="propertyKey">Property key</param>
-        /// <returns>Given property key value.]</returns>
+        /// <returns>Given property key value.</returns>
         public JObject getFormProperty(long formID, string propertyKey)
         {
             return executeGetRequest("/form/" + formID.ToString() + "/properties/" + propertyKey);
+        }
+
+        /// <summary>
+        /// Get all the reports of a form, such as excel, csv, grid, html, etc.
+        /// </summary>
+        /// <param name="formID">Form ID is the numbers you see on a form URL. You can get form IDs when you call /user/forms.</param>
+        /// <returns>List of all reports in a form, and other details about the reports such as title.</returns>
+        public JObject getFormReports(long formID)
+        {
+            return executeGetRequest("/form/" + formID.ToString() + "/reports");
         }
 
         /// <summary>
