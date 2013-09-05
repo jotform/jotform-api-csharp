@@ -69,8 +69,6 @@ namespace JotForm
             headers.Add("apiKey:" + apiKey );
             req.Headers = headers;
 
-
-
             if (method == "POST" && parameters != null)
             {
                 this.debug(parameters.ToString());
@@ -163,8 +161,7 @@ namespace JotForm
         {
             var array = (from key in nvc.AllKeys
                          from value in nvc.GetValues(key)
-                         select string.Format("{0}={1}", HttpUtility.UrlEncode(key), HttpUtility.UrlEncode(value)))
-                .ToArray();
+                         select string.Format("{0}={1}", HttpUtility.UrlEncode(key), HttpUtility.UrlEncode(value))).ToArray();
 
             return string.Join("&", array);
         }
@@ -174,14 +171,10 @@ namespace JotForm
             NameValueCollection parameters = new NameValueCollection();
 
             if (offset != 0)
-            {
                 parameters.Add("offset", offset.ToString());
-            }
 
             if (limit != 0)
-            {
                 parameters.Add("limit", limit.ToString());
-            }
 
             if (filter != null)
             {
@@ -194,10 +187,8 @@ namespace JotForm
 
                     count++;
 
-                    if (count < filter.Count) 
-                    {
+                    if (count < filter.Count)
                         value = value + ",";
-                    }
                 }
 
                 value = value + "}";
@@ -205,13 +196,10 @@ namespace JotForm
                 parameters.Add("filter", value);
             }
 
-            if (orderBy != "")
-            {
+            if (orderBy != null)
                 parameters.Add("order_by", orderBy);
-            }
 
             return parameters;
- 
         }
 
         private NameValueCollection CreateHistoryQuery(string action, string date, string sortBy, string startDate, string endDate)
@@ -227,7 +215,8 @@ namespace JotForm
 
             foreach (KeyValuePair<String, String> pair in args)
             {
-                parameters.Add(pair.Key, pair.Value);
+                if (pair.Value != "")
+                    parameters.Add(pair.Key, pair.Value);
             }
 
             return parameters;
