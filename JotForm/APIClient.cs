@@ -489,9 +489,9 @@ namespace JotForm
         /// </summary>
         /// <param name="folderID">You can get folders IDs when you call /user/folders.</param>
         /// <returns>List of forms in a folder, and other details about the form such as folder color.</returns>
-        public JObject getFolder(long folderID)
+        public JObject getFolder(String folderID)
         {
-            return executeGetRequest("/folder/" + folderID.ToString());
+            return executeGetRequest("/folder/" + folderID);
         }
 
         /// <summary>
