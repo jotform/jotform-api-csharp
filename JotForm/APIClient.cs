@@ -755,6 +755,16 @@ namespace JotForm
 
             return executePostRequest("/user/login", parameters);
         }
+
+        /// <summary>
+        /// Get details of a plan
+        /// </summary>
+        /// <param name="planName">Name of the requested plan. FREE, PREMIUM etc.</param>
+        /// <returns>Returns details of a plan</returns>
+        public JObject getPlan(String planName)
+        {
+            return executeGetRequest("/system/plan/" + planName);
+        }
     }
 
     public class JotformException : System.Exception
