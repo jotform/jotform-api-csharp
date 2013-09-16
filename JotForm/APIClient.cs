@@ -526,6 +526,24 @@ namespace JotForm
         }
 
         /// <summary>
+        /// Create new report of a form
+        /// </summary>
+        /// <param name="formID">Form ID is the numbers you see on a form URL. You can get form IDs when you call /user/forms.</param>
+        /// <param name="report">Report details. List type, title etc.</param>
+        /// <returns>Report details and URL.</returns>
+        public JObject createReport(long formID, Dictionary<string, string> report) 
+        {
+            var data = new NameValueCollection();
+
+            foreach (var key in report.Keys)
+            {
+                data.Add(key, report[key]);
+            }
+
+            return executePostRequest("/form/" + formID.ToString() + "/reports", data);
+        }
+
+        /// <summary>
         /// Delete a single submission
         /// </summary>
         /// <param name="sid">You can get submission IDs when you call /user/submissions.</param>
