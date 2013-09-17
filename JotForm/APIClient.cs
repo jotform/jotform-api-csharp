@@ -197,7 +197,7 @@ namespace JotForm
             }
 
             if (orderBy != null)
-                parameters.Add("order_by", orderBy);
+                parameters.Add("orderby", orderBy);
 
             return parameters;
         }
