@@ -775,6 +775,15 @@ namespace JotForm
         }
 
         /// <summary>
+        /// Logout user
+        /// </summary>
+        /// <returns>Returns status of request</returns>
+        public JObject logoutUser()
+        {
+            return executeGetRequest("/user/logout");
+        }
+
+        /// <summary>
         /// Get details of a plan
         /// </summary>
         /// <param name="planName">Name of the requested plan. FREE, PREMIUM etc.</param>
