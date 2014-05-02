@@ -792,6 +792,16 @@ namespace JotForm
         {
             return executeGetRequest("/system/plan/" + planName);
         }
+
+        /// <summary>
+        /// Delete a report of a form
+        /// </summary>
+        /// <param name="reportID">You can get a list of reports from /user/reports</param>
+        /// <returns>Returns details of a plan</returns>
+        public JObject deleteReport(long reportID)
+        {
+            return executeDeleteRequest("/report/" + reportID.ToString());
+        }
     }
 
     public class JotformException : System.Exception
