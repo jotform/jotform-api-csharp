@@ -1,7 +1,7 @@
 ﻿// JotForm API - C# Client
 // copyright   2013 Interlogy, LLC.
 // link        http://www.jotform.com
-// version     1.0
+// version     1.1
 // package     JotFormAPI
 
 using System;
@@ -20,6 +20,7 @@ namespace JotForm
     public class APIClient
     {
         private string apiKey;
+        public bool euProtected { get; set;  }
         private bool _debugMode;
 
         public bool debugMode
@@ -30,19 +31,23 @@ namespace JotForm
             { this._debugMode = value; }
         }
 
+
         private string baseURL = "https://api.jotform.com/";
+        private string euBaseUrl = "https://eu-api.jotform.com/";
         private string apiVersion = "v1";
 
         public APIClient()
         {
             this.apiKey = null;
             this._debugMode = false;
+            this.euProtected = false;
         }
 
-        public APIClient(String apiKey, bool debugMode=false)
+        public APIClient(String apiKey, bool debugMode=false, bool euProtected = false)
         {
             this.apiKey = apiKey;
             this._debugMode = debugMode;
+            this.euProtected = euProtected;
         }
 
         private void debug(String str) 
@@ -59,11 +64,11 @@ namespace JotForm
             {
                 path = path + "?" + ToQueryString(parameters);
             }
-
-            WebRequest req = WebRequest.Create(this.baseURL + this.apiVersion + path);
+            string apiUrl = this.euProtected ? this.euBaseUrl : this.baseURL;
+            WebRequest req = WebRequest.Create(apiUrl + this.apiVersion + path);
             req.Method = method;
 
-            this.debug(this.baseURL + this.apiVersion + path);
+            this.debug(apiUrl + this.apiVersion + path);
 
             WebHeaderCollection headers = new WebHeaderCollection();
             headers.Add("apiKey:" + apiKey );
@@ -112,7 +117,8 @@ namespace JotForm
 
         private JObject executeHttpRequest(string path, string parameters)
         {
-            WebRequest req = WebRequest.Create(this.baseURL + path);
+            string apiUrl = this.euProtected ? this.euBaseUrl : this.baseURL;
+            WebRequest req = WebRequest.Create(apiUrl + path);
             req.Method = "PUT";
 
             WebHeaderCollection headers = new WebHeaderCollection();

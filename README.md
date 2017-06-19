@@ -38,7 +38,8 @@ namespace JotFormTest
         static void Main(string[] args)
         {
             var client = new JotForm.APIClient("YOUR API KEY");
-
+            // If your account is in Eu Protected mode, set euProtected to true.
+            // client.euProtected = false; 
             var forms = client.getForms()["content"];
 
             var formTitles = from form in forms
