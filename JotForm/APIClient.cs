@@ -501,6 +501,44 @@ namespace JotForm
         }
 
         /// <summary>
+        /// Delete a folder and its subfolders
+        /// </summary>
+        /// <param name="folderID">You can get folders IDs when you call /user/folders.</param>
+        /// <returns>Status of the request.</returns>
+        public JObject deleteFolder(String folderID)
+        {
+            return executeDeleteRequest("/folder/" + folderID);
+        }
+
+        /// <summary>
+        /// Create a folder
+        /// </summary>
+        /// <param name="folderProperties">Properties of new folder.</param>
+        /// <returns>Returns new folder's details.</returns>
+        public JObject createFolder(Dictionary<string, string> folderProperties)
+        {
+            NameValueCollection parameters = new NameValueCollection();
+
+            foreach (var item in folderProperties)
+            {
+                parameters.Add(item.Key, item.Value);
+            }
+
+            return executePostRequest("/folder", parameters);
+        }
+
+        /// <summary>
+        /// Update a specific folder
+        /// </summary>
+        /// <param name="folderID">You can get folder IDs when you call /user/folders.</param>
+        /// <param name="folderProperties">New properties of the specified folder.</param>
+        /// <returns>Returns properties of the updated folder.</returns>
+        public JObject updateFolder(string folderID, string folderProperties)
+        {
+            return executePutRequest("/folder/" + folderID, folderProperties);
+        }
+
+        /// <summary>
         /// Get a list of all properties on a form
         /// </summary>
         /// <param name="formID">Form ID is the numbers you see on a form URL. You can get form IDs when you call /user/forms.</param>
