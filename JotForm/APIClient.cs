@@ -32,22 +32,25 @@ namespace JotForm
         }
 
 
-        private string baseURL = "https://api.jotform.com/";
-        private string euBaseUrl = "https://eu-api.jotform.com/";
+        private const string baseURL = "https://api.jotform.com/";
+        private const string euBaseUrl = "https://eu-api.jotform.com/";
         private string apiVersion = "v1";
+        private string apiUrl;
 
         public APIClient()
         {
             this.apiKey = null;
             this._debugMode = false;
             this.euProtected = false;
+            this.apiUrl = null;
         }
 
-        public APIClient(String apiKey, bool debugMode=false, bool euProtected = false)
+        public APIClient(String apiKey, String apiUrl = baseURL, bool debugMode=false, bool euProtected = false)
         {
             this.apiKey = apiKey;
             this._debugMode = debugMode;
             this.euProtected = euProtected;
+            this.apiUrl = apiUrl != baseURL ? apiUrl : euProtected ? euBaseUrl : baseURL
         }
 
         private void debug(String str) 
@@ -64,8 +67,7 @@ namespace JotForm
             {
                 path = path + "?" + ToQueryString(parameters);
             }
-            string apiUrl = this.euProtected ? this.euBaseUrl : this.baseURL;
-            WebRequest req = WebRequest.Create(apiUrl + this.apiVersion + path);
+            WebRequest req = WebRequest.Create(this.apiUrl + this.apiVersion + path);
             req.Method = method;
 
             this.debug(apiUrl + this.apiVersion + path);
@@ -117,8 +119,7 @@ namespace JotForm
 
         private JObject executeHttpRequest(string path, string parameters)
         {
-            string apiUrl = this.euProtected ? this.euBaseUrl : this.baseURL;
-            WebRequest req = WebRequest.Create(apiUrl + path);
+            WebRequest req = WebRequest.Create(this.apiUrl + path);
             req.Method = "PUT";
 
             WebHeaderCollection headers = new WebHeaderCollection();
