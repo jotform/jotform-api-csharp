@@ -50,7 +50,7 @@ namespace JotForm
             this.apiKey = apiKey;
             this._debugMode = debugMode;
             this.euProtected = euProtected;
-            this.apiUrl = apiUrl != baseURL ? apiUrl : euProtected ? euBaseUrl : baseURL
+            this.apiUrl = apiUrl != baseURL ? apiUrl : euProtected ? euBaseUrl : baseURL;
         }
 
         private void debug(String str) 
