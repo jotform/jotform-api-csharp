@@ -49,6 +49,14 @@ namespace JotForm
             this._debugMode = debugMode;
             this.euProtected = euProtected;
         }
+        
+        public void SetBaseURL(string url)
+        {
+            if (Uri.IsWellFormedUriString(url, UriKind.Absolute))
+                this.baseURL = url;
+            else
+                throw new ArgumentException("Invalid URL");
+        }
 
         private void debug(String str) 
         {
